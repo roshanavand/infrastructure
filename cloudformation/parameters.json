@@ -1,0 +1,42 @@
+[
+  {
+    "ParameterKey": "KeyName",
+    "ParameterValue": "mos-playground-keypair"
+  },
+  {
+    "ParameterKey": "DBName",
+    "ParameterValue": "hwdb"
+  },
+  {
+    "ParameterKey": "DBUser",
+    "ParameterValue": "hwuser"
+  },
+  {
+    "ParameterKey": "DBPassword",
+    "ParameterValue": "asdf1234"
+  },
+  {
+    "ParameterKey": "DBAllocatedStorage",
+    "ParameterValue": "5"
+  },
+  {
+    "ParameterKey": "DBInstanceClass",
+    "ParameterValue": "db.t2.small"
+  },
+  {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "t2.small"
+  },
+  {
+    "ParameterKey": "MultiAZDatabase",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "SSHLocation",
+    "ParameterValue": "0.0.0.0/0"
+  },
+  {
+    "ParameterKey": "WebServerCapacity",
+    "ParameterValue": "2"
+  }
+]
