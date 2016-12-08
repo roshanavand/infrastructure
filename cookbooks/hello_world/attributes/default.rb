@@ -1,0 +1,11 @@
+default[:user] = 'root'
+default[:app_name] = 'hello_world'
+default[:app_dir] = "/opt/#{default[:app_name]}"
+default[:app_repo] = 'https://github.com/roshanavand/hello_world.git'
+default[:ruby_version] = '2.3'
+default[:app_env] = 'production'
+default[:ignored_env] = %w(development test)
+default[:db_user] = 'user'
+default[:db_pass] = 'password'
+default[:db_host] = 'dbhost'
+default[:db_type] = 'mysql2'

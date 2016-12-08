@@ -1,0 +1,5 @@
+source 'https://supermarket.chef.io'
+
+cookbook 'apt', '~> 5.0'
+cookbook 'application', '~> 5.1'
+metadata

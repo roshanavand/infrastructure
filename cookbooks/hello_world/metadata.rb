@@ -1,0 +1,13 @@
+name 'hello_world'
+maintainer 'Mos Roshanavand'
+maintainer_email 'roshanavand[at]gmail.com'
+license 'all_rights'
+description 'Installs/Configures hello_world'
+long_description 'Installs/Configures hello_world'
+version '0.1.0'
+
+depends 'apt', '~> 5.0'
+depends 'application', '~> 5.1'
+depends 'application_git'
+depends 'application_ruby'
+depends 'build-essential'
