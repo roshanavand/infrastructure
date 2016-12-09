@@ -1,0 +1,7 @@
+server {
+  listen 80 default_server;
+  server_name <%= node[:app_name] %>;
+  passenger_enabled on;
+  passenger_app_env <%= node[:app_env] %>;
+  root <%= node[:app_dir] %>/public;
+}
