@@ -1,19 +1,19 @@
 [
   {
     "ParameterKey": "KeyName",
-    "ParameterValue": "mos-playground-keypair"
+    "ParameterValue": "AWS_KEY_NAME"
   },
   {
     "ParameterKey": "DBName",
-    "ParameterValue": "hwdb"
+    "ParameterValue": "hello_world"
   },
   {
     "ParameterKey": "DBUser",
-    "ParameterValue": "hwuser"
+    "ParameterValue": "user"
   },
   {
     "ParameterKey": "DBPassword",
-    "ParameterValue": "asdf1234"
+    "ParameterValue": "password"
   },
   {
     "ParameterKey": "DBAllocatedStorage",
@@ -28,15 +28,7 @@
     "ParameterValue": "t2.small"
   },
   {
-    "ParameterKey": "MultiAZDatabase",
-    "ParameterValue": "true"
-  },
-  {
     "ParameterKey": "SSHLocation",
     "ParameterValue": "0.0.0.0/0"
-  },
-  {
-    "ParameterKey": "WebServerCapacity",
-    "ParameterValue": "2"
   }
 ]
