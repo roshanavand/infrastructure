@@ -4,27 +4,32 @@
 #
 # Copyright (c) 2016 Mos Roshanavand, All Rights Reserved.
 
-include_recipe 'apt'
-include_recipe 'build-essential'
-
-apt_repository 'phusionpassenger' do
-  uri node[:passenger_repo_uri]
-  distribution 'xenial'
-  components ['main']
-  key node[:passenger_repo_key]
-  keyserver node[:passenger_repo_keyserver]
-  action :add
+template '/etc/yum.repos.d/epel.repo' do
+  source 'epel.repo'
 end
 
-%w(net-tools ruby-dev zlib1g-dev libsqlite3-dev libmysqlclient-dev nodejs).each do |pkg|
+yum_repository 'epel' do
+  enabled true
+  action :makecache
+end
+
+package 'ruby20-libs' do
+  action :remove
+end
+
+%w(mysql mysql-devel mysql-libs nodejs ruby23 ruby23-devel ruby23-libs
+  gcc bzip2 openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel
+  libcurl-devel gdbm-devel ncurses-devel gcc-c++ httpd httpd-devel).each do |pkg|
   package pkg
 end
 
 application node[:app_dir] do
   owner node[:user]
   group node[:user]
-  ruby node[:ruby_version]
   git node[:app_repo]
+
+  ruby_gem 'bundler'
+  ruby_gem 'passenger'
 
   bundle_install do
     user node[:user]
@@ -35,26 +40,31 @@ application node[:app_dir] do
   rails do
     rails_env node[:app_env]
     secrets_mode :yaml
-    secret_token node[:app_secret_token]
+    secret_token ENV['HELLO_WORLD_SECRET_KEY_BASE']
     database({
       adapter: node[:db_type],
-      host: node[:db_host],
-      username: node[:db_user],
-      password: node[:db_pass],
-      database: node[:db_name],
+      host: ENV['HELLO_WORLD_DATABASE_URL'],
+      username: ENV['HELLO_WORLD_DATABASE_USER'],
+      password: ENV['HELLO_WORLD_DATABASE_PASSWORD'],
+      database: ENV['HELLO_WORLD_DATABASE_NAME'],
     })
     migrate true
   end
-end
 
-include_recipe 'chef_nginx::default'
-include_recipe 'chef_nginx::passenger'
+  execute 'install_passenger_module' do
+    command 'passenger-install-apache2-module --auto'
+    creates '/usr/local/share/ruby/gems/2.3/gems/passenger-5.1.1/buildout/apache2/mod_passenger.so'
+  end
 
-nginx_site 'default' do
-  action :disable
-end
+  template '/etc/httpd/conf.d/passenger.conf' do
+    source 'passenger.conf'
+  end
 
-nginx_site node[:app_name] do
-  template 'hello_world.cnf.erb'
-  notifies :restart, 'service[nginx]'
+  template "/etc/httpd/conf.d/#{node[:app_name]}.conf" do
+    source 'apache_site.conf.erb'
+  end
+
+  service 'httpd' do
+    action [:enable, :start]
+  end
 end

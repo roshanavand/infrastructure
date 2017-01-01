@@ -1,27 +1,26 @@
 ---
+# This assumes you have aws client configured
 driver:
-  name: vagrant
-  network:
-  - ['private_network', { ip: '192.168.34.34' }]
+  name: ec2
+  aws_ssh_key_id: KEYPAIR_NAME #Name of the ssh_key_id to use
 
 provisioner:
-  name: chef_zero
-  # You may wish to disable always updating cookbooks in CI or other testing environments.
-  # For example:
-  #   always_update_cookbooks: <%= !ENV['CI'] %>
-  always_update_cookbooks: true
-
-verifier:
-  name: inspec
+  name: chef_solo
 
 platforms:
-  - name: ubuntu-16.04
+  - name: amzn-ami-hvm-2016.03.3.x86_64-gp2
+    driver:
+      image_id: ami-6869aa05
+        # security_group_ids: ['default'] #Make sure that the SSH access is enabled in this group
+        # region: us-east-1
+      instance_type: t2.small #Seems like chef can't run on smaller instances (?)
+
+transport:
+  ssh_key: PATH_TO_YOUR_AWS_KEYPAIR #Path to your AWS access key
+  username: ec2-user #AWS Linux default username
 
 suites:
   - name: default
     run_list:
       - recipe[hello_world::default]
-    verifier:
-      inspec_tests:
-        - test/recipes
     attributes:

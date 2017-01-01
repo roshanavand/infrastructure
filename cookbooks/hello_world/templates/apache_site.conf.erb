@@ -1,0 +1,8 @@
+<VirtualHost *:80>
+  ServerName <%= node[:app_name] %>
+  DocumentRoot <%= node[:app_dir] %>/public
+  <Directory <%= node[:app_dir] %>/public>
+     AllowOverride all
+     Options -MultiViews
+  </Directory>
+</VirtualHost>
