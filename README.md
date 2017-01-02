@@ -15,11 +15,11 @@ Install [Ruby](https://www.ruby-lang.org/en/documentation/installation/) then [I
 
 Change variable data accordingly in `cloudformation/helloworld_former.rb`:
 ```sh
-parameters = [{ parameter_key: 'KeyName', parameter_value: 'NAME_OF_THE_CREATED_KEYPAIR' }
+parameters = [{ parameter_key: 'KeyName', parameter_value: 'NAME_OF_THE_CREATED_KEYPAIR' }, ...
 ```
 Example:
 ```sh
-parameters = [{ parameter_key: 'KeyName', parameter_value: 'mos-roshanavand-aws' }
+parameters = [{ parameter_key: 'KeyName', parameter_value: 'mos-roshanavand-aws' }, ...
 ```
 Run the `helloworld_former.rb` script to create a new stack.
 ```sh
@@ -27,7 +27,7 @@ $ cd cloudformation
 $ ruby helloworld_former.rb
 ```
 
-The stack creation could take up to 30 minutes. meanwhile you can see the creation progress on the screen, wait untill it's finished:
+The stack creation usually takes about 30 minutes. meanwhile you can see the creation progress on the screen, wait until it's finished:
 ```sh
 AWS::CloudFormation::Stack                                            CREATE_IN_PROGRESS
 AWS::ElasticLoadBalancing::LoadBalancer                               CREATE_IN_PROGRESS
@@ -43,7 +43,7 @@ AWS::AutoScaling::AutoScalingGroup                                    CREATE_IN_
 AWS::CloudFormation::Stack                                            CREATE_COMPLETE
 AWS::AutoScaling::AutoScalingGroup                                    CREATE_COMPLETE
 ```
-When the cration is done, you will get some output:
+When the creation is done, you will get some output:
 ```sh
 OUTPUT DATA:
         EC2 Public DNS names, use this address to bootstrap with knife
@@ -54,7 +54,7 @@ OUTPUT DATA:
 ***             http://HelloWorl-ElasticL-15M53DC16BDAB-865072088.us-east-1.elb.amazonaws.com/
 ````
 If you don't change the default value for `WebServerCapacity` parameter in the script, then you will have two outputs for EC2 instances, just like above. You'll need them to bootstrap with knife tool.
-The second output is the address for `ElasticLoadBalancer`, this address points to out 'Hello World' web page.
+The second output is the address for `ElasticLoadBalancer`, this address points to our 'Hello World' web page.
 
 ### Apply Chef cookbooks
 Creation of a ChefServer is not done by our stack creator script.
@@ -70,7 +70,7 @@ $ berks install
 $ berks upload
 ```
 
-Use the output data from stack cration to bootstrap the nodes:
+Use the output data from stack creation to bootstrap the nodes:
 ```sh
 $ knife bootstrap <PUBLIC_DNS_FOR_EC2> --ssh-user ec2-user --sudo --identity-file <PATH_TO_YOUR_AWS_KEYPAIR_PEM> --run-list hello_world -N <NAME_OF_THE_NODE>
 ```
@@ -83,3 +83,18 @@ Run this for all the ec2 instances. (Remember to name them differently)
 ---
 
 Visit the application URL :)
+
+---
+
+### Test application with Selenium
+Change to selenium directory and install required gems:
+```sh
+$ cd selenium
+$ bundle install
+```
+This selenium tests will run locally using ChromeDriver by default, if you have a Selenium server you can change the settings accordingly in `spec_helper.rb` file.
+To run the tests locally you need to download and install [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/getting-started)
+Then change the `WEBSITE_URL` value in `spec_helper.rb` file, and run the tests:
+```sh
+$ bundle exec rspec spec/test_login.rb
+```
