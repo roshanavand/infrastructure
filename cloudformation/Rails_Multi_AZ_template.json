@@ -764,27 +764,27 @@
           },
           "set_env_vars": {
             "files": {
-              "/tmp/env_vars": {
+              "/etc/environment": {
                 "content": {
                   "Fn::Join": [
                     "",
                     [
-                      "export HELLO_WORLD_DATABASE_NAME=",
+                      "HELLO_WORLD_DATABASE_NAME=",
                       {
                         "Ref": "DBName"
                       },
                       "\n",
-                      "export HELLO_WORLD_DATABASE_USER=",
+                      "HELLO_WORLD_DATABASE_USER=",
                       {
                         "Ref": "DBUser"
                       },
                       "\n",
-                      "export HELLO_WORLD_DATABASE_PASSWORD=",
+                      "HELLO_WORLD_DATABASE_PASSWORD=",
                       {
                         "Ref": "DBPassword"
                       },
                       "\n",
-                      "export HELLO_WORLD_DATABASE_URL=",
+                      "HELLO_WORLD_DATABASE_URL=",
                       {
                         "Fn::GetAtt": [
                           "MySQLDatabase",
@@ -792,7 +792,7 @@
                         ]
                       },
                       "\n",
-                      "export HELLO_WORLD_SECRET_KEY_BASE=",
+                      "HELLO_WORLD_SECRET_KEY_BASE=",
                       {
                         "Ref": "SecretKeyBase"
                       },
@@ -800,11 +800,6 @@
                     ]
                   ]
                 }
-              }
-            },
-            "commands": {
-              "load_env_vars": {
-                "command": "cat /tmp/env_vars >> /home/ec2-user/.bashrc"
               }
             }
           }

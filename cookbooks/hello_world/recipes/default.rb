@@ -29,7 +29,9 @@ application node[:app_dir] do
   git node[:app_repo]
 
   ruby_gem 'bundler'
-  ruby_gem 'passenger'
+  ruby_gem 'passenger' do
+    version '5.1.1'
+  end
 
   bundle_install do
     user node[:user]
