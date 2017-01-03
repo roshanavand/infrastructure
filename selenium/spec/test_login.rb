@@ -39,6 +39,7 @@ describe 'HelloWorld Login' do
     visit WEBSITE_URL
     fill_in 'email', with: 'thisemailmustnotexist@nonexistant.fake'
     fill_in 'password', with: 'blahblah'
+    click_on 'Submit'
     expect(page).to have_content('Login')
   end
 end

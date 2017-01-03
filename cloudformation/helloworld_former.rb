@@ -5,7 +5,8 @@ require 'aws-sdk'
 require 'securerandom'
 
 Aws.use_bundled_cert! #Fixes the cert issue for windows users
-client = Aws::CloudFormation::Client.new(region: 'us-east-1')
+aws_region = 'us-east-1'
+client = Aws::CloudFormation::Client.new(region: aws_region)
 
 template_body = File.read 'Rails_Multi_AZ_template.json'
 
@@ -63,8 +64,8 @@ begin
         # Couldn't get the output directly as EC2s are created by LaunchConfiguration
         load_balancer_name = output.output_value.split('-')[0..2].join('-')
         #LoadBalancer does not output Name attribute, processing it's DNS name
-        elb = Aws::ElasticLoadBalancing::Client.new(region: 'us-east-1')
-        ec2 = Aws::EC2::Client.new(region: 'us-east-1')
+        elb = Aws::ElasticLoadBalancing::Client.new(region: aws_region)
+        ec2 = Aws::EC2::Client.new(region: aws_region)
         puts "\tEC2 Public DNS names, use this address to bootstrap with knife\n"
         elb.describe_load_balancers({load_balancer_names: [ load_balancer_name ]}).
         to_h[:load_balancer_descriptions][0][:instances].each do |instance|
